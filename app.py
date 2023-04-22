@@ -356,7 +356,7 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
 
 if st.button("Generate Itinerary"):
 
-    #user_preferences = get_user_preferences()
+    user_preferences = get_user_preferences()
     #print("User Preferences:")
     #print(user_preferences)
 
