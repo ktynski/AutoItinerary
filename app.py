@@ -20,8 +20,8 @@ from ipywidgets import embed
 load_dotenv()
 
 
-snippet = embed.embed_snippet(views=map)
-html = embed.html_template.format(title="", snippet=snippet)
+#snippet = embed.embed_snippet(views=map)
+#html = embed.html_template.format(title="", snippet=snippet)
 
 import streamlit.components.v1 as components
 components.html(html, height=500,width=500)
