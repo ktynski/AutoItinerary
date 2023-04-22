@@ -35,8 +35,7 @@ openai.api_key = os.environ['openai_api_key']
 your_tripadvisor_api_key = os.environ['your_tripadvisor_api_key']
 eventbrite_api_key = os.environ['eventbrite_api_key']
 
-
-    if st.button("Generate Itinerary"):
+if st.button("Generate Itinerary"):
     def get_user_preferences():
         destination = input("Enter your destination: ")
         start_date = input("Enter the start date of your trip (YYYY-MM-DD): ")
