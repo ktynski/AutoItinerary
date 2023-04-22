@@ -9,11 +9,12 @@ import json
 import pandas as pd
 import googlemaps
 import gmaps
-from IPython.display import display, HTML
-from google.colab import output
-output.enable_custom_widget_manager()
+import os
 
-gmaps_api_key ='Enter API key'
+# Access the API key from the environment variable
+api_key = os.environ['MY_API_KEY']
+
+gmaps_api_key =os.environ['gmaps_api_key']
 # Create a client for the googlemaps library
 gmaps_client = googlemaps.Client(key=gmaps_api_key)
 
@@ -22,9 +23,9 @@ gmaps.configure(api_key=gmaps_api_key)
 
 
 
-openai.api_key = "Enter key"
-your_tripadvisor_api_key = "Enter key"
-eventbrite_api_key = 'Enter key'
+openai.api_key = os.environ['openai.api_key]
+your_tripadvisor_api_key = os.environ['your_tripadvisor_api_key']
+eventbrite_api_key = os.environ['eventbrite_api_key']
 
 def get_user_preferences():
     destination = input("Enter your destination: ")
