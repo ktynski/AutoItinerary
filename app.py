@@ -180,6 +180,7 @@ def get_points_of_interest(api_key, latlong):
     url = f"https://api.content.tripadvisor.com/api/v1/location/nearby_search?radius=2&radiusUnit=km&latLong={latlong}&category=attractions&language=en&key={api_key}"
     print(url)
     headers = {"accept": "application/json"}
+    print(headers)
     response = requests.get(url, headers=headers)
     print(response.content)
     data = response.json()
