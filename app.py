@@ -435,6 +435,9 @@ if st.button("Generate Itinerary"):
     steps = directions_result[0]['legs'][0]['steps']
 
     st.subheader("Itinerary")
+    display_directions(gpt_itinerary)
+    
+    st.subheader("Itinerary Directions")
     display_directions(steps)
 
     st.subheader("Map")
