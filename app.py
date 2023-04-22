@@ -14,7 +14,8 @@ import gmaps
 from IPython.display import display, HTML
 import os
 from dotenv import load_dotenv
-from ipywidgets import embed
+import numpy as np
+
 
 # Load environment variables from .env file
 load_dotenv()
