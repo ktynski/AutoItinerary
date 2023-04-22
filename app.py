@@ -354,86 +354,86 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
     return df
 
 
-    if st.button("Generate Itinerary"):
+if st.button("Generate Itinerary"):
 
-        #user_preferences = get_user_preferences()
-        #print("User Preferences:")
-        #print(user_preferences)
+    #user_preferences = get_user_preferences()
+    #print("User Preferences:")
+    #print(user_preferences)
 
 
 
-        destination = user_preferences['destination']
-        geocoded_location = gmaps_client.geocode(destination)
-        print(geocoded_location)
+    destination = user_preferences['destination']
+    geocoded_location = gmaps_client.geocode(destination)
+    print(geocoded_location)
+    latitude = geocoded_location[0]['geometry']['location']['lat']
+    longitude = geocoded_location[0]['geometry']['location']['lng']
+    lat_lng = (latitude, longitude)
+
+
+    #destinationlatlong = generate_gpt_response(destination)
+    #print(destinationlatlong)
+
+
+    city_latitude = latitude
+    city_longitude = longitude
+    num_circles = 3
+    num_points_per_circle = 10
+    circle_distance_km = 2
+
+    coordinates = generate_concentric_circles(city_latitude, city_longitude, num_circles, num_points_per_circle, circle_distance_km)
+    # Assuming 'coordinates' is a list of strings as shown in the error message.
+    coordinates = [tuple(map(float, coord.split(','))) for coord in coordinates]
+    coordinates = [(round(lat, 6), round(lng, 6)) for lat, lng in coordinates]
+    coordinates = [f"{lat},{long}" for lat, long in coordinates]
+
+    tripadivsordf = get_data_for_latlong_pairs(your_tripadvisor_api_key, coordinates)
+    tripadivsordf = tripadivsordf.drop_duplicates(subset="Address")
+    tripadivsordf.to_csv('tripoptions.csv')
+
+
+
+    locations = generate_gpt_itinerary(tripadivsordf[['Name','Address', 'Rating', 'Num Reviews']])
+    gpt_itinerary = generate_gpt_itinerary(locations)
+    locationsresponse = extract_itinerary_locations(gpt_itinerary)
+    print(locationsresponse)
+
+    # Geocode the locations using the googlemaps client
+    geocoded_locations = [gmaps_client.geocode(location) for location in locationsresponse]
+
+    lat_lng_list = []
+
+    for geocoded_location in geocoded_locations:
         latitude = geocoded_location[0]['geometry']['location']['lat']
         longitude = geocoded_location[0]['geometry']['location']['lng']
         lat_lng = (latitude, longitude)
+        lat_lng_list.append(lat_lng) 
 
+    # Print the list of latitude and longitude tuples
+    print(lat_lng_list)
 
-        #destinationlatlong = generate_gpt_response(destination)
-        #print(destinationlatlong)
+    # Get directions using the googlemaps client
+    directions_result = gmaps_client.directions(
+        origin=lat_lng_list[0],
+        destination=lat_lng_list[-1],
+        waypoints=lat_lng_list[1:-1],
+        mode='driving'
 
+    )
 
-        city_latitude = latitude
-        city_longitude = longitude
-        num_circles = 3
-        num_points_per_circle = 10
-        circle_distance_km = 2
+    # Extract and print step-by-step instructions
+    steps = directions_result[0]['legs'][0]['steps']
+    for i, step in enumerate(steps):
+        print(f"Step {i+1}: {step['html_instructions']}")
 
-        coordinates = generate_concentric_circles(city_latitude, city_longitude, num_circles, num_points_per_circle, circle_distance_km)
-        # Assuming 'coordinates' is a list of strings as shown in the error message.
-        coordinates = [tuple(map(float, coord.split(','))) for coord in coordinates]
-        coordinates = [(round(lat, 6), round(lng, 6)) for lat, lng in coordinates]
-        coordinates = [f"{lat},{long}" for lat, long in coordinates]
+    # Create the map with the first location as the center
+    fig = gmaps.figure(center=lat_lng_list[0], zoom_level=11)
 
-        tripadivsordf = get_data_for_latlong_pairs(your_tripadvisor_api_key, coordinates)
-        tripadivsordf = tripadivsordf.drop_duplicates(subset="Address")
-        tripadivsordf.to_csv('tripoptions.csv')
+    # Create the itinerary layer
+    itinerary_layer = gmaps.directions_layer(lat_lng_list[0], lat_lng_list[-1], waypoints=lat_lng_list[1:-1], travel_mode='DRIVING')
+    #fig.add_layer(itinerary_layer)
 
-
-
-        locations = generate_gpt_itinerary(tripadivsordf[['Name','Address', 'Rating', 'Num Reviews']])
-        gpt_itinerary = generate_gpt_itinerary(locations)
-        locationsresponse = extract_itinerary_locations(gpt_itinerary)
-        print(locationsresponse)
-
-        # Geocode the locations using the googlemaps client
-        geocoded_locations = [gmaps_client.geocode(location) for location in locationsresponse]
-
-        lat_lng_list = []
-
-        for geocoded_location in geocoded_locations:
-            latitude = geocoded_location[0]['geometry']['location']['lat']
-            longitude = geocoded_location[0]['geometry']['location']['lng']
-            lat_lng = (latitude, longitude)
-            lat_lng_list.append(lat_lng) 
-
-        # Print the list of latitude and longitude tuples
-        print(lat_lng_list)
-
-        # Get directions using the googlemaps client
-        directions_result = gmaps_client.directions(
-            origin=lat_lng_list[0],
-            destination=lat_lng_list[-1],
-            waypoints=lat_lng_list[1:-1],
-            mode='driving'
-
-        )
-
-        # Extract and print step-by-step instructions
-        steps = directions_result[0]['legs'][0]['steps']
-        for i, step in enumerate(steps):
-            print(f"Step {i+1}: {step['html_instructions']}")
-
-        # Create the map with the first location as the center
-        fig = gmaps.figure(center=lat_lng_list[0], zoom_level=11)
-
-        # Create the itinerary layer
-        itinerary_layer = gmaps.directions_layer(lat_lng_list[0], lat_lng_list[-1], waypoints=lat_lng_list[1:-1], travel_mode='DRIVING')
-        #fig.add_layer(itinerary_layer)
-
-        # Display the map
-        #display(fig)
+    # Display the map
+    #display(fig)
 
 
 
