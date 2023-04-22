@@ -416,12 +416,14 @@ def create_map(lat_lng_list):
 if st.button("Generate Itinerary"):
     user_preferences = get_user_preferences()
     lat_lng = get_geocoded_location(destination)
+    print(lat_lng)
     city_latitude, city_longitude = lat_lng
     num_circles = 3
     num_points_per_circle = 10
     circle_distance_km = 2
 
     coordinates = generate_concentric_circles(city_latitude, city_longitude, num_circles, num_points_per_circle, circle_distance_km)
+    print(coordinates)
     tripadivsordf = get_data_for_latlong_pairs(your_tripadvisor_api_key, coordinates)
     tripadivsordf = tripadivsordf.drop_duplicates(subset="Address")
 
