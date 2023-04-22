@@ -494,7 +494,7 @@ if st.button("Generate Itinerary"):
     gpt_itinerary = generate_gpt_itinerary(locations)
     locationsresponse = extract_itinerary_locations(gpt_itinerary)
 
-        lat_lng_list = get_geocoded_locations(locationsresponse)
+    lat_lng_list = get_geocoded_locations(locationsresponse)
 
     directions_result = get_directions_result(lat_lng_list)
     steps = directions_result[0]['legs'][0]['steps']
