@@ -23,7 +23,18 @@ st.title("Trip Planner")
 
 destination = st.text_input("Enter your destination:")
 
+def get_current_ip():
+    try:
+        response = requests.get("https://api64.ipify.org?format=json")
+        ip = response.json()["ip"]
+        return ip
+    except:
+        st.warning("Unable to fetch current IP address.")
+        return None
 
+current_ip = get_current_ip()
+if current_ip:
+    st.write(f"Current IP address: {current_ip}")
 
 gmaps_client = googlemaps.Client(key=os.environ['gmaps_api_key'])
 gmaps_api_key = os.environ['gmaps_api_key']
