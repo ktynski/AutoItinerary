@@ -518,4 +518,4 @@ if st.button("Generate Itinerary"):
     # Render map in Streamlit
     snippet = embed.embed_snippet(views=_map)
     html = embed.html_template.format(title="", snippet=snippet)
-return components.html(html, height=500,width=500)
+#return components.html(html, height=500,width=500)
