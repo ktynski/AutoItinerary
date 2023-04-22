@@ -24,7 +24,7 @@ load_dotenv()
 #html = embed.html_template.format(title="", snippet=snippet)
 
 import streamlit.components.v1 as components
-components.html(html, height=500,width=500)
+#components.html(html, height=500,width=500)
 
 gmaps_client = googlemaps.Client(key=os.environ['gmaps_api_key'])
 gmaps_api_key = os.environ['gmaps_api_key']
