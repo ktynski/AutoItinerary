@@ -19,7 +19,7 @@ gmaps.configure(api_key=gmaps_api_key)
 
 
 
-openai.api_key = os.environ['openai.api_key']
+openai.api_key = os.environ['openai_api_key']
 your_tripadvisor_api_key = os.environ['your_tripadvisor_api_key']
 eventbrite_api_key = os.environ['eventbrite_api_key']
 
