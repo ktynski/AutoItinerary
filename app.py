@@ -441,7 +441,7 @@ if st.button("Generate Itinerary"):
 
     st.subheader("Map")
     fig = create_map(lat_lng_list)
-    #gmaps_static.embed(fig, st)
+    gmaps_static.embed(fig, st)
 
 
 
