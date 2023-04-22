@@ -440,8 +440,11 @@ if st.button("Generate Itinerary"):
     display_directions(steps)
 
     st.subheader("Map")
-    fig = create_map(lat_lng_list)
-    gmaps_static.embed(fig, st)
+    # Convert the list of lat/long tuples into a DataFrame
+    df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
+
+    # Display the DataFrame as a map
+    st.map(df)
 
 
 
