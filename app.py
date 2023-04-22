@@ -428,10 +428,10 @@ if st.button("Generate Itinerary"):
 
     # Create the itinerary layer
     itinerary_layer = gmaps.directions_layer(lat_lng_list[0], lat_lng_list[-1], waypoints=lat_lng_list[1:-1], travel_mode='DRIVING')
-    fig.add_layer(itinerary_layer)
+    #fig.add_layer(itinerary_layer)
 
     # Display the map
-    display(fig)
+    #display(fig)
 
 
 
