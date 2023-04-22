@@ -18,7 +18,7 @@ from ipywidgets import embed
 
 # Load environment variables from .env file
 load_dotenv()
-
+print("wtf")
 st.title("Trip Planner")
 
 destination = st.text_input("Enter your destination:")
