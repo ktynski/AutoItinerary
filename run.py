@@ -18,8 +18,6 @@ gmaps_client = googlemaps.Client(key=gmaps_api_key)
 # Configure the gmaps library with the API key
 gmaps.configure(api_key=gmaps_api_key)
 
-!jupyter nbextension enable --py gmaps
-!jupyter nbextension enable --py widgetsnbextension
 
 
 openai.api_key = "Enter key"
