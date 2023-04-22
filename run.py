@@ -9,8 +9,6 @@ import googlemaps
 import gmaps
 import os
 
-# Access the API key from the environment variable
-api_key = os.environ['MY_API_KEY']
 
 gmaps_api_key =os.environ['gmaps_api_key']
 # Create a client for the googlemaps library
