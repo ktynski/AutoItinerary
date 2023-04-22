@@ -15,11 +15,17 @@ import gmaps
 from IPython.display import display, HTML
 import os
 from dotenv import load_dotenv
+from ipywidgets import embed
 
 # Load environment variables from .env file
 load_dotenv()
 
 
+snippet = embed.embed_snippet(views=map)
+html = embed.html_template.format(title="", snippet=snippet)
+
+import streamlit.components.v1 as components
+components.html(html, height=500,width=500)
 
 gmaps_client = googlemaps.Client(key=os.environ['gmaps_api_key'])
 gmaps_api_key = os.environ['gmaps_api_key']
@@ -505,3 +511,11 @@ if st.button("Generate Itinerary"):
     st.subheader("Map")
     fig = create_map(lat_lng_list)
     gmaps_static.embed(fig, st)
+    # Plot coordinates
+    coordinates = (40.75, -74)
+    _map = gmaps.figure(center=coordinates, zoom_level=12)
+
+    # Render map in Streamlit
+    snippet = embed.embed_snippet(views=_map)
+    html = embed.html_template.format(title="", snippet=snippet)
+    return components.html(html, height=500,width=500)
