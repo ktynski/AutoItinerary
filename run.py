@@ -11,7 +11,7 @@ from IPython.display import display, HTML
 from google.colab import output
 output.enable_custom_widget_manager()
 
-gmaps_api_key ='AIzaSyBODDOimnTl-PWHbVDmKymzcJ56vLnvvI8'
+gmaps_api_key ='Enter API key'
 # Create a client for the googlemaps library
 gmaps_client = googlemaps.Client(key=gmaps_api_key)
 
