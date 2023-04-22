@@ -3,3 +3,4 @@ googlemaps
 python-gmaps
 gmaps
 python-dotenv
+streamlit_gmaps
