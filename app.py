@@ -396,12 +396,12 @@ def get_directions_result(lat_lng_list):
 def display_directions(steps):
     for i, step in enumerate(steps):
         print(f"Step {i+1}: {step['html_instructions']}")
-"""
-def create_map(lat_lng_list):
-    fig = gmaps.figure(center=lat_lng_list[0], zoom_level=11)
-    itinerary_layer = gmaps.directions_layer(lat_lng_list[0], lat_lng_list[-1], waypoints=lat_lng_list[1:-1], travel_mode='DRIVING')
-    fig.add_layer(itinerary_layer)
-    return fig"""
+
+#def create_map(lat_lng_list):
+    #fig = gmaps.figure(center=lat_lng_list[0], zoom_level=11)
+    #itinerary_layer = gmaps.directions_layer(lat_lng_list[0], lat_lng_list[-1], waypoints=lat_lng_list[1:-1], travel_mode='DRIVING')
+    #fig.add_layer(itinerary_layer)
+    #return fig"""
 
 
 
