@@ -41,7 +41,7 @@ def get_user_preferences():
     start_date = "2023-11-24"
     end_date = "2023-11-24"
     interests = "Hiking"
-    budget = "5000
+    budget = "5000"
     transportation_mode = "driving"
 
     preferences = {
