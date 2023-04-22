@@ -1,7 +1,6 @@
 import pandas as pd
 import googlemaps
 import gmaps
-from streamlit_gmaps import gmaps_static
 import streamlit as st
 import time
 import math
