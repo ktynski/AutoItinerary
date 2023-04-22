@@ -182,7 +182,7 @@ if st.button("Generate Itinerary"):
         headers = {"accept": "application/json"}
         response = requests.get(url, headers=headers)
         data = response.json()
-        #print(data)
+        print(data)
         poi = [item['location_id'] for item in data['data']]
         print('POI:')
         print(poi)
