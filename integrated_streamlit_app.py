@@ -7,6 +7,8 @@ st.title('AutoItinerary')
 destination = st.text_input('Enter your destination:')
 user_preferences = {'destination': destination}
 
+your_tripadvisor_api_key = os.environ['your_tripadvisor_api_key']
+
 your_tripadvisor_api_key = st.text_input('Enter your TripAdvisor API key: (This should be kept secret)')
 
 def main(user_preferences, your_tripadvisor_api_key):
