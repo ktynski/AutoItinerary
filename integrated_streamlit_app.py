@@ -435,7 +435,8 @@ def main(user_preferences, your_tripadvisor_api_key):
     # Display the map
     display(fig)
 
-        pass
+        
 
 if st.button('Generate Itinerary') and destination and your_tripadvisor_api_key:
     main(user_preferences, your_tripadvisor_api_key)
+pass
