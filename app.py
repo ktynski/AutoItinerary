@@ -132,7 +132,7 @@ def generate_gpt_itinerary(tripadvisor_data):
                     },
                     {
                         "role": "user",
-                        "content": f"Use streamlit's markdown format ex: st.markdown(generated content) in order to properly format it. Use readability and design best practices, but make it fun and eye catching. Include links to websites and/or phone numbers. Data to use to build itinerary: \n ### \n {tripadvisor_data} \n ### Itinerary: \n "
+                        "content": f"Use streamlit's markdown format ex: st.markdown(generated content) in order to properly format it. Use readability and design best practices, but make it fun and eye catching. Include links to websites and/or phone numbers. Use various styling options to create an attractive and visually appealing text output. Consider using headings, bold, italics, lists, blockquotes, code snippets, tables, links, and any other relevant Markdown elements to showcase a wide range of styling possibilities. Data to use to build itinerary: \n ### \n {tripadvisor_data} \n ### Itinerary: \n "
                     }
                 ],
         max_tokens=2500,
