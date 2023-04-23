@@ -527,7 +527,7 @@ def main():
         # Update progress after displaying itinerary directions
         st.subheader("Itinerary Directions")
         display_itinerary_directions(directions_result)
-        progress_bar.progress(progress_weight["display_itinerary_directions"] + progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"] + progress_weight["generate_gpt_itinerary")
+        progress_bar.progress(progress_weight["display_itinerary_directions"] + progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"] + progress_weight["generate_gpt_itinerary"])
 
         # ... other code here ...
 
