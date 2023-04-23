@@ -346,13 +346,16 @@ def get_location_details(api_key, location_id):
 def get_data_for_latlong_pairs(api_key, latlong_pairs):
     all_data = []
     unique_location_ids = set()
+    
+    progress_bar = st.progress(0)  # Initialize progress bar
+    total_pairs = len(latlong_pairs)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         api_key_lat_lng_list = [(api_key, lat_lng) for lat_lng in latlong_pairs]
         results = list(executor.map(lambda args: fetch_tripadvisor_data(*args), api_key_lat_lng_list))
 
     for lat_lng, (points_of_interest, restaurants, accommodations) in zip(latlong_pairs, results):
-        print(lat_lng)
+        #print(lat_lng)
 
         unique_points_of_interest = [location_id for location_id in points_of_interest if location_id not in unique_location_ids]
         unique_location_ids.update(unique_points_of_interest)
@@ -364,7 +367,9 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
         all_data.extend(parse_tripadvisor_data(unique_points_of_interest, 'Point of Interest', api_key))
         all_data.extend(parse_tripadvisor_data(unique_restaurants, 'Restaurant', api_key))
         all_data.extend(parse_tripadvisor_data(unique_accommodations, 'Accommodation', api_key))
-        print(all_data)
+        #print(all_data)
+        progress = (idx + 1) / total_pairs  # Calculate progress
+        progress_bar.progress(progress)  # Update progress bar
 
     df = pd.DataFrame(all_data)
     return df
@@ -433,7 +438,7 @@ def fetch_tripadvisor_data(api_key, lat_lng):
 if st.button("Generate Itinerary"):
     user_preferences = get_user_preferences()
     lat_lng = get_geocoded_location(destination)
-    print(lat_lng)
+    #print(lat_lng)
     city_latitude, city_longitude = lat_lng
     num_circles = 3
     num_points_per_circle = 10
