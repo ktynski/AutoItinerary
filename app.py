@@ -203,7 +203,7 @@ def get_points_of_interest(api_key, latlong):
     #print(url)
     #headers = {"accept": "application/json"}
     #print(headers)
-    response = requests.get(url, headers=headers)
+    response = requests.get(url)
     #print(response.content)
     data = response.json()
     print(data)
