@@ -200,16 +200,16 @@ def parse_coordinates(coords_string):
 def get_points_of_interest(api_key, latlong):
 
     url = f"https://api.content.tripadvisor.com/api/v1/location/nearby_search?radius=2&radiusUnit=km&latLong={latlong}&category=attractions&language=en&key={api_key}"
-    print(url)
+    #print(url)
     headers = {"accept": "application/json"}
-    print(headers)
+    #print(headers)
     response = requests.get(url, headers=headers)
-    print(response.content)
+    #print(response.content)
     data = response.json()
-    print(data)
+    #print(data)
     poi = [item['location_id'] for item in data['data']]
     print('POI:')
-    print(poi)
+    #print(poi)
     return poi
 
 
@@ -222,7 +222,7 @@ def get_accommodations(api_key, latlong):
     #print(data)
     accommodations = [item['location_id'] for item in data['data']]
     print('accommodations:')
-    print(accommodations)
+    #print(accommodations)
     return accommodations
 
 
@@ -234,7 +234,7 @@ def get_restaurants(api_key, latlong):
     #print(data)
     restaurants =  [item['location_id'] for item in data['data']]
     print('Restaurants:')
-    print(restaurants)
+    #print(restaurants)
 
     return restaurants    
 
