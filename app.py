@@ -398,16 +398,17 @@ def get_directions_result(lat_lng_list):
 
 
 
+import html2text
+
 def display_directions(steps):
     html_converter = html2text.HTML2Text()
     html_converter.ignore_links = True
     html_converter.ignore_images = True
 
     for i, step in enumerate(steps):
-        print(f"HTML instructions: {step['html_instructions']}")
-        
         text_instructions = html_converter.handle(step['html_instructions'])
-        st.write(f"Step {i+1}: {text_instructions}")
+        st.write(f"Step {i+1}: {text_instructions.strip()}")
+
 
 
 def create_map(lat_lng_list):
