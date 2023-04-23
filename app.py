@@ -88,11 +88,11 @@ def generate_gpt_itinerary(tripadvisor_data):
         messages=[
                     {
                         "role": "system",
-                        "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 3 day itinerary. Simulate a world renowned travel guide author and  an expert on the given location.
+                        "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 5 day itinerary. Simulate a world renowned travel guide author and  an expert on the given location.
                         Please follow the template generally, but feel free to improve on it as long as it is consistent throughout in terms of formatting and thoroughness. Be as detailed as possible to make it as useful and engaging and convincing as possible that the itinerary will create a memorable and enjoyable experience: \n
 
 
-                        Day {day_number}:
+                        Day {day_number} (should have a theme):
 
                         Morning:
                         - Visit {point_of_interest_1_name} at {point_of_interest_1_address}
@@ -102,6 +102,8 @@ def generate_gpt_itinerary(tripadvisor_data):
                           {restaurant_1_website} (Rating: {restaurant_1_rating}, {restaurant_1_num_reviews} reviews)
                           Cuisines: {restaurant_1_cuisines}
                           Hours: {restaurant_1_hours}
+                          
+                          Tips: {tips for this segment}
 
                         Afternoon:
                         - Visit {point_of_interest_2_name} at {point_of_interest_2_address}
@@ -111,7 +113,9 @@ def generate_gpt_itinerary(tripadvisor_data):
                           {restaurant_2_website} (Rating: {restaurant_2_rating}, {restaurant_2_num_reviews} reviews)
                           Cuisines: {restaurant_2_cuisines}
                           Hours: {restaurant_2_hours}
-
+                          
+                          Tips: {tips for this segment}
+                          
                         Evening:
                         - Visit {point_of_interest_3_name} at {point_of_interest_3_address}
                           {point_of_interest_3_website} (Rating: {point_of_interest_3_rating}, {point_of_interest_3_num_reviews} reviews)
@@ -120,13 +124,15 @@ def generate_gpt_itinerary(tripadvisor_data):
                           {restaurant_3_website} (Rating: {restaurant_3_rating}, {restaurant_3_num_reviews} reviews)
                           Cuisines: {restaurant_3_cuisines}
                           Hours: {restaurant_3_hours}
+                          
+                          Tips: {tips for this segment}
 
-
+                        Then go on to the next 4 days of the itinerary and finish with a useful conclusion.
                           """
                     },
                     {
                         "role": "user",
-                        "content": f" Data to use to build itinerary{tripadvisor_data}"
+                        "content": f" Data to use to build itinerary: \n ### \n {tripadvisor_data} \n ### Itinerary: \n "
                     }
                 ],
         max_tokens=2500,
@@ -146,7 +152,7 @@ def extract_itinerary_locations(itinerary):
         messages=[
                     {
                         "role": "system",
-                        "content": """ Based on the following itinerary, please extract an unnumbered list of names + locations (each as a string) in the order in which they are found in the itinerary: \n
+                        "content": """ Every day should be fully planned, and not left up to the user. Based on the following itinerary, please extract an unnumbered list of names + locations (each as a string) in the order in which they are found in the itinerary: \n
 
                           """
                     },
@@ -350,7 +356,7 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
     progress_bar = st.progress(0)  # Initialize progress bar
     total_pairs = len(latlong_pairs)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         api_key_lat_lng_list = [(api_key, lat_lng) for lat_lng in latlong_pairs]
         results = list(executor.map(lambda args: fetch_tripadvisor_data(*args), api_key_lat_lng_list))
 
@@ -406,13 +412,13 @@ def get_directions_result(lat_lng_list):
 import html2text
 
 def display_directions(steps):
-    html_converter = html2text.HTML2Text()
-    html_converter.ignore_links = True
-    html_converter.ignore_images = True
+    #html_converter = html2text.HTML2Text()
+    #html_converter.ignore_links = True
+    #html_converter.ignore_images = True
 
-    for i, step in enumerate(steps):
-        text_instructions = html_converter.handle(step['html_instructions'])
-        st.write(f"Step {i+1}: {text_instructions.strip()}")
+    #for i, step in enumerate(steps):
+        #text_instructions = html_converter.handle(step['html_instructions'])
+    st.write(steps)
 
 
 
