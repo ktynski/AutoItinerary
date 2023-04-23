@@ -150,7 +150,7 @@ def generate_gpt_itinerary(tripadvisor_data):
 
 def extract_itinerary_locations(itinerary):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[
                     {
                         "role": "system",
@@ -179,7 +179,7 @@ def extract_itinerary_locations(itinerary):
                                         ### {itinerary} ### Locations List: \n'''
                 }
                 ],
-        max_tokens=1500,
+        max_tokens=500,
         n=1,
         stop=None,
         temperature=0.7,
@@ -207,9 +207,9 @@ def get_points_of_interest(api_key, latlong):
     response = requests.get(url)
     #print(response.content)
     data = response.json()
-    print(data)
+    #print(data)
     poi = [item['location_id'] for item in data['data']]
-    print('POI:')
+    #print('POI:')
     #print(poi)
     return poi
 
@@ -222,7 +222,7 @@ def get_accommodations(api_key, latlong):
     data = response.json()
     #print(data)
     accommodations = [item['location_id'] for item in data['data']]
-    print('accommodations:')
+    #print('accommodations:')
     #print(accommodations)
     return accommodations
 
@@ -234,7 +234,7 @@ def get_restaurants(api_key, latlong):
     data = response.json()
     #print(data)
     restaurants =  [item['location_id'] for item in data['data']]
-    print('Restaurants:')
+    #print('Restaurants:')
     #print(restaurants)
 
     return restaurants    
@@ -355,7 +355,7 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
     all_data = []
     unique_location_ids = set()
     
-    progress_bar = st.progress(0)  # Initialize progress bar
+    #progress_bar = st.progress(0)  # Initialize progress bar
     total_pairs = len(latlong_pairs)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
@@ -376,8 +376,8 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
         all_data.extend(parse_tripadvisor_data(unique_restaurants, 'Restaurant', api_key))
         all_data.extend(parse_tripadvisor_data(unique_accommodations, 'Accommodation', api_key))
         #print(all_data)
-        progress = (idx + 1) / total_pairs  # Calculate progress
-        progress_bar.progress(progress)  # Update progress bar
+        #progress = (idx + 1) / total_pairs  # Calculate progress
+        #progress_bar.progress(progress)  # Update progress bar
 
     df = pd.DataFrame(all_data)
     return df
@@ -482,9 +482,10 @@ def main():
 
         progress_bar = st.progress(0)
         progress_weight = {
-            "get_data_for_latlong_pairs": 0.4,
+            "get_data_for_latlong_pairs": 0.2,
             "get_geocoded_locations": 0.1,
-            "get_directions_result": 0.3,
+            "generate_gpt_itinerary":0.4
+            "get_directions_result": 0.1,
             "display_itinerary_directions": 0.1,
             "create_map": 0.1,
         }
@@ -506,6 +507,8 @@ def main():
         tripadivsordf = tripadivsordf.drop_duplicates(subset="Address")
         locations = generate_gpt_itinerary(tripadivsordf[['Name','Address', 'Rating', 'Num Reviews']])
         gpt_itinerary = generate_gpt_itinerary(locations)
+        progress_bar.progress(progress_weight["generate_gpt_itinerary"])
+        
         st.markdown(gpt_itinerary)
         locationsresponse = extract_itinerary_locations(gpt_itinerary)
 
