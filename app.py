@@ -467,10 +467,10 @@ if st.button("Generate Itinerary"):
     st.subheader("Itinerary")
     display_directions(gpt_itinerary)
     
-    st.subheader("Itinerary Directions")
-    display_directions(steps)
+    
 
-    st.subheader("Map")
+    
+    st.subheader("Itinerary Directions")
     # Extract the lat/long of the start and end points of each step along the route
     steps = directions_result[0]['legs'][0]['steps']
     for step in steps:
@@ -478,7 +478,9 @@ if st.button("Generate Itinerary"):
         end_loc = step['end_location']
         lat_lng_list.append((start_loc['lat'], start_loc['lng']))
         lat_lng_list.append((end_loc['lat'], end_loc['lng']))
-
+        display_directions(step)
+        
+    st.subheader("Map")
     # Convert the list of lat/long tuples into a DataFrame
     df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
 
