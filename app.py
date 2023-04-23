@@ -347,7 +347,7 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
     all_data = []
     unique_location_ids = set()
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         api_key_lat_lng_list = [(api_key, lat_lng) for lat_lng in latlong_pairs]
         results = list(executor.map(lambda args: fetch_tripadvisor_data(*args), api_key_lat_lng_list))
 
