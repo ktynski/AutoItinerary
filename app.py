@@ -402,6 +402,7 @@ def display_directions(steps):
     html_converter.ignore_images = True
 
     for i, step in enumerate(steps):
+        print(f"HTML instructions: {step['html_instructions']}")
         text_instructions = html_converter.handle(step['html_instructions'])
         st.write(f"Step {i+1}: {text_instructions}")
 
