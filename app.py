@@ -133,6 +133,7 @@ def generate_gpt_itinerary(tripadvisor_data):
         temperature=0.7,
     )
     print(response["choices"][0]["message"]["content"].strip())
+    st.write(response["choices"][0]["message"]["content"].strip())
     return response["choices"][0]["message"]["content"].strip()
 
 
@@ -403,6 +404,7 @@ def display_directions(steps):
 
     for i, step in enumerate(steps):
         print(f"HTML instructions: {step['html_instructions']}")
+        
         text_instructions = html_converter.handle(step['html_instructions'])
         st.write(f"Step {i+1}: {text_instructions}")
 
