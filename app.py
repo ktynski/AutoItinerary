@@ -206,7 +206,7 @@ def get_points_of_interest(api_key, latlong):
     response = requests.get(url, headers=headers)
     #print(response.content)
     data = response.json()
-    #print(data)
+    print(data)
     poi = [item['location_id'] for item in data['data']]
     print('POI:')
     #print(poi)
