@@ -391,6 +391,7 @@ def get_geocoded_location(destination):
 
 def get_geocoded_locations(locations):
     geocoded_locations = [gmaps_client.geocode(location) for location in locations]
+    print(geocoded_locations)
     lat_lng_list = []
     for geocoded_location in geocoded_locations:
         latitude = geocoded_location[0]['geometry']['location']['lat']
@@ -461,18 +462,18 @@ if st.button("Generate Itinerary"):
 
     lat_lng_list = get_geocoded_locations(locationsresponse)
 
-directions_result = get_directions_result(lat_lng_list)
+    directions_result = get_directions_result(lat_lng_list)
 
-st.subheader("Itinerary Directions")
-# Call the display_itinerary_directions function with directions_result
-display_itinerary_directions(directions_result)
+    st.subheader("Itinerary Directions")
+    # Call the display_itinerary_directions function with directions_result
+    display_itinerary_directions(directions_result)
 
-st.subheader("Map")
-# Convert the list of lat/long tuples into a DataFrame
-df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
+    st.subheader("Map")
+    # Convert the list of lat/long tuples into a DataFrame
+    df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
 
-# Display the DataFrame as a map
-create_map(lat_lng_list)
+    # Display the DataFrame as a map
+    create_map(lat_lng_list)
 
 
 
