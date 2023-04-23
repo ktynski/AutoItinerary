@@ -358,7 +358,7 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
     #progress_bar = st.progress(0)  # Initialize progress bar
     total_pairs = len(latlong_pairs)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         api_key_lat_lng_list = [(api_key, lat_lng) for lat_lng in latlong_pairs]
         results = list(executor.map(lambda args: fetch_tripadvisor_data(*args), api_key_lat_lng_list))
 
@@ -417,7 +417,7 @@ def display_itinerary_directions(directions_result):
         st.markdown(f"**Leg {idx + 1}**")
         steps = leg['steps']
         for i, step in enumerate(steps):
-            text_instructions = html.unescape(step['html_instructions'])
+            text_instructions = step['html_instructions']
             st.markdown(f"**Step {i + 1}:** {text_instructions}")
 
 
@@ -507,27 +507,27 @@ def main():
         tripadivsordf = tripadivsordf.drop_duplicates(subset="Address")
         locations = generate_gpt_itinerary(tripadivsordf[['Name','Address', 'Rating', 'Num Reviews']])
         gpt_itinerary = generate_gpt_itinerary(locations)
-        progress_bar.progress(progress_weight["generate_gpt_itinerary"])
+        progress_bar.progress(progress_weight["generate_gpt_itinerary"] + progress_weight["get_data_for_latlong_pairs"])
         
         st.markdown(gpt_itinerary)
         locationsresponse = extract_itinerary_locations(gpt_itinerary)
 
         # Update progress after getting geocoded locations
         lat_lng_list = get_geocoded_locations(locationsresponse)
-        progress_bar.progress(progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"])
+        progress_bar.progress(progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"] + progress_weight["generate_gpt_itinerary"])
 
         # ... other code here ...
 
         # Update progress after getting directions result
         directions_result = get_directions_result(lat_lng_list)
-        progress_bar.progress(progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"])
+        progress_bar.progress(progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"] + progress_weight["generate_gpt_itinerary"])
 
         # ... other code here ...
 
         # Update progress after displaying itinerary directions
         st.subheader("Itinerary Directions")
         display_itinerary_directions(directions_result)
-        progress_bar.progress(progress_weight["display_itinerary_directions"] + progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"])
+        progress_bar.progress(progress_weight["display_itinerary_directions"] + progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["get_data_for_latlong_pairs"] + progress_weight["generate_gpt_itinerary")
 
         # ... other code here ...
 
