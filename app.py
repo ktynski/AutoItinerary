@@ -354,7 +354,7 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
         api_key_lat_lng_list = [(api_key, lat_lng) for lat_lng in latlong_pairs]
         results = list(executor.map(lambda args: fetch_tripadvisor_data(*args), api_key_lat_lng_list))
 
-    for lat_lng, (points_of_interest, restaurants, accommodations) in zip(latlong_pairs, results):
+    for idx, (lat_lng, (points_of_interest, restaurants, accommodations)) in enumerate(zip(latlong_pairs, results)):
         #print(lat_lng)
 
         unique_points_of_interest = [location_id for location_id in points_of_interest if location_id not in unique_location_ids]
