@@ -484,7 +484,7 @@ def main():
         progress_weight = {
             "get_data_for_latlong_pairs": 0.2,
             "get_geocoded_locations": 0.1,
-            "generate_gpt_itinerary":0.4
+            "generate_gpt_itinerary":0.4,
             "get_directions_result": 0.1,
             "display_itinerary_directions": 0.1,
             "create_map": 0.1,
