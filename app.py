@@ -104,7 +104,7 @@ def generate_gpt_itinerary(tripadvisor_data):
                           Cuisines: {restaurant_1_cuisines}
                           Hours: {restaurant_1_hours}
                           
-                          Tips: {tips for this segment}
+                          Tips: {tips for this segment} should be in blockquote markdown
 
                         Afternoon:
                         - Visit {point_of_interest_2_name} at {point_of_interest_2_address}
@@ -115,7 +115,7 @@ def generate_gpt_itinerary(tripadvisor_data):
                           Cuisines: {restaurant_2_cuisines}
                           Hours: {restaurant_2_hours}
                           
-                          Tips: {tips for this segment}
+                          Tips: {tips for this segment} should be in blockquote markdown
                           
                         Evening:
                         - Visit {point_of_interest_3_name} at {point_of_interest_3_address}
@@ -126,7 +126,7 @@ def generate_gpt_itinerary(tripadvisor_data):
                           Cuisines: {restaurant_3_cuisines}
                           Hours: {restaurant_3_hours}
                           
-                          Tips: {tips for this segment}
+                          Tips: {tips for this segment} should be in blockquote markdown
 
                         Then go on to the next 2 days of the itinerary and finish with a useful conclusion.
                           """
@@ -413,15 +413,16 @@ def get_directions_result(lat_lng_list):
 import html2text
 
 def display_directions(steps):
-    for i, step in directions_result['steps']:
-        distance = step['distance']['text']
-        duration = step['duration']['text']
-        instruction = html2text.HTML2Text().handle(step['html_instructions']).strip()
+    for leg in directions_result['legs']:
+        for i, step in enumerate(leg['steps']):
+            distance = step['distance']['text']
+            duration = step['duration']['text']
+            instruction = html2text.HTML2Text().handle(step['html_instructions']).strip()
 
-        st.write(f"**Step {i + 1}:** {instruction}")
-        st.write(f"  - *Distance:* {distance}")
-        st.write(f"  - *Duration:* {duration}")
-        st.write("---")
+            st.write(f"**Step {i + 1}:** {instruction}")
+            st.write(f"  - *Distance:* {distance}")
+            st.write(f"  - *Duration:* {duration}")
+            st.write("---")
 
 
 
