@@ -88,9 +88,9 @@ def generate_gpt_itinerary(tripadvisor_data):
         messages=[
                     {
                         "role": "system",
-                        "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 3 day itinerary. Simulate a world renowned travel guide author and  an expert on the given location.
+                        "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 3 day itinerary using beatiful markdown with clear hierarchy and easy to read with flourishes. Simulate a world renowned travel guide author and  an expert on the given location.
                         Please follow the template generally, but feel free to improve on it as long as it is consistent throughout in terms of formatting and thoroughness. Be as detailed as possible to make it as useful and engaging and convincing as possible that the itinerary will create a memorable and enjoyable experience: \n
-
+                        Each day should have plans for breakfast, lunch, dinner
 
                         Day {day_number} (should have a theme):
 
@@ -140,7 +140,7 @@ def generate_gpt_itinerary(tripadvisor_data):
         stop=None,
         temperature=0.7,
     )
-    print(response["choices"][0]["message"]["content"].strip())
+    #print(response["choices"][0]["message"]["content"].strip())
     st.markdown(response["choices"][0]["message"]["content"].strip())
     return response["choices"][0]["message"]["content"].strip()
 
@@ -182,10 +182,10 @@ def extract_itinerary_locations(itinerary):
         stop=None,
         temperature=0.7,
     )
-    print(response["choices"][0]["message"]["content"].strip())
+    #print(response["choices"][0]["message"]["content"].strip())
     locations = response["choices"][0]["message"]["content"].strip()
     split_locations = locations.split("\n")
-    print(split_locations)
+    #print(split_locations)
     return split_locations
 
 
@@ -465,7 +465,7 @@ if st.button("Generate Itinerary"):
     steps = directions_result[0]['legs'][0]['steps']
 
     st.subheader("Itinerary")
-    display_directions(gpt_itinerary)
+    #display_directions(gpt_itinerary)
     
     
 
@@ -485,8 +485,6 @@ if st.button("Generate Itinerary"):
     df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
 
     # Display the DataFrame as a map
-    # Display the map
-    st.subheader("Map")
     create_map(lat_lng_list)
 
 
