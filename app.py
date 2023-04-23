@@ -15,6 +15,7 @@ import os
 from dotenv import load_dotenv
 import numpy as np
 import html2text
+import concurrent.futures
 
 
 # Load environment variables from .env file
@@ -345,14 +346,13 @@ def get_location_details(api_key, location_id):
 def get_data_for_latlong_pairs(api_key, latlong_pairs):
     all_data = []
     unique_location_ids = set()
-    print(latlong_pairs)
 
-    for latlong in latlong_pairs:
-        time.sleep(.4)
-        print(latlong)
-        points_of_interest = get_points_of_interest(api_key, latlong)
-        restaurants = get_restaurants(api_key, latlong)
-        accommodations = get_accommodations(api_key, latlong)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        api_key_lat_lng_list = [(api_key, lat_lng) for lat_lng in latlong_pairs]
+        results = list(executor.map(lambda args: fetch_tripadvisor_data(*args), api_key_lat_lng_list))
+
+    for lat_lng, (points_of_interest, restaurants, accommodations) in zip(latlong_pairs, results):
+        print(lat_lng)
 
         unique_points_of_interest = [location_id for location_id in points_of_interest if location_id not in unique_location_ids]
         unique_location_ids.update(unique_points_of_interest)
@@ -416,7 +416,12 @@ def create_map(lat_lng_list):
 
 
 
+def fetch_tripadvisor_data(api_key, lat_lng):
+    points_of_interest = get_points_of_interest(api_key, lat_lng)
+    restaurants = get_restaurants(api_key, lat_lng)
+    accommodations = get_accommodations(api_key, lat_lng)
 
+    return points_of_interest, restaurants, accommodations
 
 
 
