@@ -88,7 +88,7 @@ def generate_gpt_itinerary(tripadvisor_data):
         messages=[
                     {
                         "role": "system",
-                        "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 5 day itinerary. Simulate a world renowned travel guide author and  an expert on the given location.
+                        "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 3 day itinerary. Simulate a world renowned travel guide author and  an expert on the given location.
                         Please follow the template generally, but feel free to improve on it as long as it is consistent throughout in terms of formatting and thoroughness. Be as detailed as possible to make it as useful and engaging and convincing as possible that the itinerary will create a memorable and enjoyable experience: \n
 
 
@@ -127,12 +127,12 @@ def generate_gpt_itinerary(tripadvisor_data):
                           
                           Tips: {tips for this segment}
 
-                        Then go on to the next 4 days of the itinerary and finish with a useful conclusion.
+                        Then go on to the next 2 days of the itinerary and finish with a useful conclusion.
                           """
                     },
                     {
                         "role": "user",
-                        "content": f" Data to use to build itinerary: \n ### \n {tripadvisor_data} \n ### Itinerary: \n "
+                        "content": f"Use streamlit's markdown format ex: st.markdown(generated content) in order to properly format it. Use readability and design best practices, but make it fun and eye catching. Include links to websites and/or phone numbers. Data to use to build itinerary: \n ### \n {tripadvisor_data} \n ### Itinerary: \n "
                     }
                 ],
         max_tokens=2500,
@@ -141,7 +141,7 @@ def generate_gpt_itinerary(tripadvisor_data):
         temperature=0.7,
     )
     print(response["choices"][0]["message"]["content"].strip())
-    st.write(response["choices"][0]["message"]["content"].strip())
+    st.markdown(response["choices"][0]["message"]["content"].strip())
     return response["choices"][0]["message"]["content"].strip()
 
 
@@ -356,7 +356,7 @@ def get_data_for_latlong_pairs(api_key, latlong_pairs):
     progress_bar = st.progress(0)  # Initialize progress bar
     total_pairs = len(latlong_pairs)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         api_key_lat_lng_list = [(api_key, lat_lng) for lat_lng in latlong_pairs]
         results = list(executor.map(lambda args: fetch_tripadvisor_data(*args), api_key_lat_lng_list))
 
@@ -451,7 +451,7 @@ if st.button("Generate Itinerary"):
     circle_distance_km = 2
 
     coordinates = generate_concentric_circles(city_latitude, city_longitude, num_circles, num_points_per_circle, circle_distance_km)
-    print(coordinates)
+    #print(coordinates)
     tripadivsordf = get_data_for_latlong_pairs(your_tripadvisor_api_key, coordinates)
     tripadivsordf = tripadivsordf.drop_duplicates(subset="Address")
 
