@@ -87,7 +87,8 @@ def generate_gpt_itinerary(tripadvisor_data):
         messages=[
                     {
                         "role": "system",
-                        "content": """ Based on the following content please plan an itinerary that follows this format and repeat it to create a 3 day itinerary: \n
+                        "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 3 day itinerary. Simulate a world renowned travel guide author and  an expert on the given location.
+                        Please follow the template generally, but feel free to improve on it as long as it is consistent throughout in terms of formatting and thoroughness. Be as detailed as possible to make it as useful and engaging and convincing as possible that the itinerary will create a memorable and enjoyable experience: \n
 
 
                         Day {day_number}:
@@ -127,7 +128,7 @@ def generate_gpt_itinerary(tripadvisor_data):
                         "content": f" Data to use to build itinerary{tripadvisor_data}"
                     }
                 ],
-        max_tokens=1500,
+        max_tokens=2500,
         n=1,
         stop=None,
         temperature=0.7,
