@@ -90,9 +90,10 @@ def generate_gpt_itinerary(tripadvisor_data):
                         "role": "system",
                         "content": """ Based on a dataset relevant travel guide data provided at the end please plan an itinerary that follows this format to create a 3 day itinerary using beatiful markdown with clear hierarchy and easy to read with flourishes. Simulate a world renowned travel guide author and  an expert on the given location.
                         Please follow the template generally, but feel free to improve on it as long as it is consistent throughout in terms of formatting and thoroughness. Be as detailed as possible to make it as useful and engaging and convincing as possible that the itinerary will create a memorable and enjoyable experience: \n
-                        Each day should have plans for breakfast, lunch, dinner
-
-                        Day {day_number} (should have a theme):
+                        Each day should have plans for breakfast, lunch, dinner, do not ask the user to choose for any of the days or activities, you need to suggest all.
+                        
+                        Intro: Provide an enticing title for the itinerary that includes the location
+                        Day: {day_number} (should have a theme):
 
                         Morning:
                         - Visit {point_of_interest_1_name} at {point_of_interest_1_address}
@@ -412,13 +413,15 @@ def get_directions_result(lat_lng_list):
 import html2text
 
 def display_directions(steps):
-    #html_converter = html2text.HTML2Text()
-    #html_converter.ignore_links = True
-    #html_converter.ignore_images = True
+    for i, step in directions_result['steps']:
+        distance = step['distance']['text']
+        duration = step['duration']['text']
+        instruction = html2text.HTML2Text().handle(step['html_instructions']).strip()
 
-    #for i, step in enumerate(steps):
-        #text_instructions = html_converter.handle(step['html_instructions'])
-    st.write(steps)
+        st.write(f"**Step {i + 1}:** {instruction}")
+        st.write(f"  - *Distance:* {distance}")
+        st.write(f"  - *Duration:* {duration}")
+        st.write("---")
 
 
 
