@@ -14,6 +14,7 @@ import gmaps
 import os
 from dotenv import load_dotenv
 import numpy as np
+import html2text
 
 
 # Load environment variables from .env file
@@ -393,9 +394,17 @@ def get_directions_result(lat_lng_list):
     )
     return directions_result
 
+
+
 def display_directions(steps):
+    html_converter = html2text.HTML2Text()
+    html_converter.ignore_links = True
+    html_converter.ignore_images = True
+
     for i, step in enumerate(steps):
-        st.write(f"Step {i+1}: {step['html_instructions']}")
+        text_instructions = html_converter.handle(step['html_instructions'])
+        st.write(f"Step {i+1}: {text_instructions}")
+
 
 def create_map(lat_lng_list):
     df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
