@@ -142,7 +142,7 @@ def generate_gpt_itinerary(tripadvisor_data):
         temperature=0.7,
     )
     #print(response["choices"][0]["message"]["content"].strip())
-    st.markdown(response["choices"][0]["message"]["content"].strip())
+    
     return response["choices"][0]["message"]["content"].strip()
 
 
@@ -409,20 +409,15 @@ def get_directions_result(lat_lng_list):
     return directions_result
 
 
+def display_itinerary_directions(directions_result):
+    legs = directions_result[0]['legs']
+    for idx, leg in enumerate(legs):
+        st.markdown(f"**Leg {idx + 1}**")
+        steps = leg['steps']
+        for i, step in enumerate(steps):
+            text_instructions = html.unescape(step['html_instructions'])
+            st.markdown(f"**Step {i + 1}:** {text_instructions}")
 
-import html2text
-
-def display_directions(steps):
-    for leg in directions_result['legs']:
-        for i, step in enumerate(leg['steps']):
-            distance = step['distance']['text']
-            duration = step['duration']['text']
-            instruction = html2text.HTML2Text().handle(step['html_instructions']).strip()
-
-            st.write(f"**Step {i + 1}:** {instruction}")
-            st.write(f"  - *Distance:* {distance}")
-            st.write(f"  - *Duration:* {duration}")
-            st.write("---")
 
 
 
@@ -461,35 +456,23 @@ if st.button("Generate Itinerary"):
 
     locations = generate_gpt_itinerary(tripadivsordf[['Name','Address', 'Rating', 'Num Reviews']])
     gpt_itinerary = generate_gpt_itinerary(locations)
+    st.markdown(gpt_itinerary)
     locationsresponse = extract_itinerary_locations(gpt_itinerary)
 
     lat_lng_list = get_geocoded_locations(locationsresponse)
 
-    directions_result = get_directions_result(lat_lng_list)
-    steps = directions_result[0]['legs'][0]['steps']
+directions_result = get_directions_result(lat_lng_list)
 
-    st.subheader("Itinerary")
-    #display_directions(gpt_itinerary)
-    
-    
+st.subheader("Itinerary Directions")
+# Call the display_itinerary_directions function with directions_result
+display_itinerary_directions(directions_result)
 
-    
-    st.subheader("Itinerary Directions")
-    # Extract the lat/long of the start and end points of each step along the route
-    steps = directions_result[0]['legs'][0]['steps']
-    for step in steps:
-        start_loc = step['start_location']
-        end_loc = step['end_location']
-        lat_lng_list.append((start_loc['lat'], start_loc['lng']))
-        lat_lng_list.append((end_loc['lat'], end_loc['lng']))
-        display_directions(step)
-        
-    st.subheader("Map")
-    # Convert the list of lat/long tuples into a DataFrame
-    df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
+st.subheader("Map")
+# Convert the list of lat/long tuples into a DataFrame
+df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
 
-    # Display the DataFrame as a map
-    create_map(lat_lng_list)
+# Display the DataFrame as a map
+create_map(lat_lng_list)
 
 
 
