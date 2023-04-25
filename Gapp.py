@@ -17,6 +17,7 @@ import numpy as np
 import html2text
 import concurrent.futures
 import html
+from transformers import GPT2Tokenizer
 
 
 
@@ -74,7 +75,7 @@ def get_user_preferences():
 
 def generate_gpt_itinerary(tripadvisor_data):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[
                     {
                         "role": "system",
@@ -126,7 +127,7 @@ def generate_gpt_itinerary(tripadvisor_data):
                         "content": f"Use streamlit's markdown format ex: st.markdown(generated content) in order to properly format it. Use readability and design best practices, but make it fun and eye catching. Include links to websites and/or phone numbers. Use various styling options to create an attractive and visually appealing text output. Consider using headings, bold, italics, lists, blockquotes, code snippets, tables, links, and any other relevant Markdown elements to showcase a wide range of styling possibilities. Data to use to build itinerary: \n ### \n {tripadvisor_data} \n ### Itinerary: \n "
                     }
                 ],
-        max_tokens=2500,
+        max_tokens=1500,
         n=1,
         stop=None,
         temperature=0.7,
@@ -362,45 +363,19 @@ def create_map(lat_lng_list):
 
 
 
+def truncate_string_to_max_tokens(input_string, max_tokens=1700):
+    # Tokenize the input string
+    tokens = tokenizer.tokenize(input_string)
+    
+    # Truncate the tokens to a maximum of 2000 tokens
+    truncated_string = tokens[:max_tokens]
+    
+    # Convert the truncated tokens back to a string
+    truncated_string = tokenizer.convert_tokens_to_string(truncated_string)
+    
+    return truncated_string    
 
 
-
-
-
-
-#if st.button("Generate Itinerary"):
-    #user_preferences = get_user_preferences()
-    #lat_lng = get_geocoded_location(destination)
-    #print(lat_lng)
-    #city_latitude, city_longitude = lat_lng
-    #num_circles = 3
-    #num_points_per_circle = 10
-    #circle_distance_km = 2
-
-    #coordinates = generate_concentric_circles(city_latitude, city_longitude, num_circles, num_points_per_circle, circle_distance_km)
-    #print(coordinates)
-    #tripadivsordf = get_data_for_latlong_pairs(your_tripadvisor_api_key, coordinates)
-    #tripadivsordf = tripadivsordf.drop_duplicates(subset="Address")
-
-    #locations = generate_gpt_itinerary(tripadivsordf[['Name','Address', 'Rating', 'Num Reviews']])
-    #gpt_itinerary = generate_gpt_itinerary(locations)
-    #st.markdown(gpt_itinerary)
-    #locationsresponse = extract_itinerary_locations(gpt_itinerary)
-
-    #lat_lng_list = get_geocoded_locations(locationsresponse)
-
-    #directions_result = get_directions_result(lat_lng_list)
-
-    #st.subheader("Itinerary Directions")
-    # Call the display_itinerary_directions function with directions_result
-    #display_itinerary_directions(directions_result)
-
-    #st.subheader("Map")
-    # Convert the list of lat/long tuples into a DataFrame
-    #df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
-
-    # Display the DataFrame as a map
-    #create_map(lat_lng_list)
 
     
 def main():
@@ -429,9 +404,9 @@ def main():
         #print(coordinates)
         
         # Update progress after getting data for latlong pairs
-        
-        locations = generate_gpt_itinerary(all_places_df)
-        gpt_itinerary = generate_gpt_itinerary(locations)
+        df_string = all_places_df.to_string()
+        truncated_location_string = truncate_string_to_max_tokens(df_string, max_tokens=1700):
+        gpt_itinerary = generate_gpt_itinerary(truncated_location_string)
         progress_bar.progress(progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
         
         st.markdown(gpt_itinerary)
