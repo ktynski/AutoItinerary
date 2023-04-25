@@ -406,11 +406,8 @@ def main():
         progress_bar = st.progress(0)
         progress_weight = {
             "starter": 0.3,
-            "generate_gpt_itinerary":0.3,
-            "get_geocoded_locations": 0.1,
-            "get_directions_result": 0.1,
-            "display_itinerary_directions": 0.1,
-            "create_map": 0.1,
+            "generate_gpt_itinerary":0.7,
+       
         }
 
         user_preferences = get_user_preferences()
@@ -435,29 +432,29 @@ def main():
         locationsresponse = extract_itinerary_locations(gpt_itinerary)
 
         # Update progress after getting geocoded locations
-        lat_lng_list = get_geocoded_locations(locationsresponse)
-        progress_bar.progress(progress_weight["get_geocoded_locations"] + progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
+        #lat_lng_list = get_geocoded_locations(locationsresponse)
+        #progress_bar.progress(progress_weight["get_geocoded_locations"] + progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
 
         # ... other code here ...
 
         # Update progress after getting directions result
-        directions_result = get_directions_result(lat_lng_list)
-        progress_bar.progress(progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
+        #directions_result = get_directions_result(lat_lng_list)
+        #progress_bar.progress(progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
 
         # ... other code here ...
 
         # Update progress after displaying itinerary directions
-        st.subheader("Itinerary Directions")
-        display_itinerary_directions(directions_result)
-        progress_bar.progress(progress_weight["display_itinerary_directions"] + progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
+        #st.subheader("Itinerary Directions")
+        #display_itinerary_directions(directions_result)
+        #progress_bar.progress(progress_weight["display_itinerary_directions"] + progress_weight["get_directions_result"] + progress_weight["get_geocoded_locations"] + progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
 
         # ... other code here ...
 
         # Update progress after creating the map
-        st.subheader("Map")
-        df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
-        create_map(lat_lng_list)
-        progress_bar.progress(1.0)  # Complete progress bar
+        #st.subheader("Map")
+        #df = pd.DataFrame(lat_lng_list, columns=['lat', 'lon'])
+        #create_map(lat_lng_list)
+        #progress_bar.progress(1.0)  # Complete progress bar
 
 if __name__ == "__main__":
     main()
