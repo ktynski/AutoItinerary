@@ -5,3 +5,4 @@ gmaps
 python-dotenv
 ipywidgets
 html2text
+transformers
