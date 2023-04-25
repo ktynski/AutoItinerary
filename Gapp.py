@@ -75,7 +75,10 @@ def get_user_preferences():
 
 def generate_gpt_itinerary(tripadvisor_data):
     res_box = st.empty()
-  
+    delay_time = 0.01 #  faster
+    max_response_length = 8000
+    answer = ''
+    start_time = time.time()
             
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
