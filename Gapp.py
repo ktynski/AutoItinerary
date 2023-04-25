@@ -74,7 +74,28 @@ def get_user_preferences():
 
 
 def generate_gpt_itinerary(tripadvisor_data):
-    response = openai.ChatCompletion.create(
+    res_box = st.empty()
+    
+    
+    
+    report = []
+        # Looping over the response
+        for resp in openai.Completion.create(model='text-davinci-003',
+                                            prompt=user_input,
+                                            max_tokens=120, 
+                                            temperature = 0.5,
+                                            stream = True):
+            # join method to concatenate the elements of the list 
+            # into a single string, 
+            # then strip out any empty strings
+            report.append(resp.choices[0].text)
+            result = "".join(report).strip()
+            result = result.replace("\n", "")        
+            res_box.markdown(f'*{result}*') 
+            
+            
+            
+    for resp in = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
                     {
@@ -131,8 +152,12 @@ def generate_gpt_itinerary(tripadvisor_data):
         n=1,
         stop=None,
         temperature=0.7,
+        stream = True
     )
-    #print(response["choices"][0]["message"]["content"].strip())
+        report.append(resp.choices[0].text)
+        result = "".join(report).strip()
+        result = result.replace("\n", "")        
+        res_box.markdown(f'*{result}*') 
     
     return response["choices"][0]["message"]["content"].strip()
 
@@ -351,7 +376,7 @@ def display_itinerary_directions(directions_result):
         steps = leg['steps']
         for i, step in enumerate(steps):
             text_instructions = step['html_instructions']
-            st.markdown(f"**Step {i + 1}:** {text_instructions}", dangerously_allow_html=True)
+            st.markdown(f"**Step {i + 1}:** {text_instructions}")
 
 
 
@@ -409,7 +434,7 @@ def main():
         gpt_itinerary = generate_gpt_itinerary(truncated_location_string)
         progress_bar.progress(progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
         
-        st.markdown(gpt_itinerary)
+        #st.markdown(gpt_itinerary)
         locationsresponse = extract_itinerary_locations(gpt_itinerary)
 
         # Update progress after getting geocoded locations
