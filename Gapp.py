@@ -75,9 +75,10 @@ def get_user_preferences():
 
 def generate_gpt_itinerary(tripadvisor_data):
     res_box = st.empty()
-    delay_time = 0.01 #  faster
+    delay_time = 0.01 # faster
     max_response_length = 8000
     answer = ''
+    full_answer = '' # Variable to store the entire content
     start_time = time.time()
             
     response = openai.ChatCompletion.create(
@@ -140,13 +141,17 @@ def generate_gpt_itinerary(tripadvisor_data):
         stream = True
     )
     for event in response:
-        # STREAM THE ANSWER
-        print(answer, end='', flush=True) # Print the response
         # RETRIEVE THE TEXT FROM THE RESPONSE
         event_time = time.time() - start_time  # CALCULATE TIME DELAY BY THE EVENT
         event_text = event['choices'][0]['delta'] # EVENT DELTA RESPONSE
         answer = event_text.get('content', '') # RETRIEVE CONTENT
-        res_box.markdown(answer, unsafe_allow_html=True) # Display the content in Streamlit
+        
+        # Concatenate the new content to the existing content
+        full_answer += answer
+        
+        # Update the markdown display with the entire content
+        res_box.markdown(full_answer, unsafe_allow_html=True)
+        
         time.sleep(delay_time)
     
     
