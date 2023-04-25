@@ -135,7 +135,7 @@ def generate_gpt_itinerary(tripadvisor_data):
         stop=None,
         temperature=0.7,
         stream = True
-    ):
+    )
         for event in response: 
             # STREAM THE ANSWER
             print(answer, end='', flush=True) # Print the response    
