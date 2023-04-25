@@ -141,7 +141,7 @@ def generate_gpt_itinerary(tripadvisor_data):
         stop=None,
         temperature=0.7,
         stream = True
-    )
+    ):
         report.append(resp.choices[0].text)
         result = "".join(report).strip()
         result = result.replace("\n", "")        
