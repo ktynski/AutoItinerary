@@ -83,7 +83,7 @@ def generate_gpt_itinerary(tripadvisor_data):
             
             
             
-    for resp in = openai.ChatCompletion.create(
+    for resp in openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
                     {
