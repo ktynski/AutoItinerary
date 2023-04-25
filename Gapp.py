@@ -145,6 +145,8 @@ def generate_gpt_itinerary(tripadvisor_data):
         # RETRIEVE THE TEXT FROM THE RESPONSE
         event_time = time.time() - start_time  # CALCULATE TIME DELAY BY THE EVENT
         event_text = event['choices'][0]['delta'] # EVENT DELTA RESPONSE
+        event_text.append(event.choices[0].text)
+        event_text = "".join(evemt_text).strip()
         answer = event_text.get('content', '') # RETRIEVE CONTENT
         res_box.markdown(f'*{answer}*') 
         time.sleep(delay_time)
