@@ -364,7 +364,7 @@ def create_map(lat_lng_list):
 
 
 def truncate_string_to_max_tokens(input_string, max_tokens=1700):
-    # Tokenize the input string
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
     tokens = tokenizer.tokenize(input_string)
     
     # Truncate the tokens to a maximum of 2000 tokens
