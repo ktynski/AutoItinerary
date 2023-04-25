@@ -350,7 +350,8 @@ def display_itinerary_directions(directions_result):
         steps = leg['steps']
         for i, step in enumerate(steps):
             text_instructions = step['html_instructions']
-            st.markdown(f"**Step {i + 1}:** {text_instructions}")
+            st.markdown(f"**Step {i + 1}:** {text_instructions}", dangerously_allow_html=True)
+
 
 
 
