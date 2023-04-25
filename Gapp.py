@@ -405,7 +405,7 @@ def main():
         
         # Update progress after getting data for latlong pairs
         df_string = all_places_df.to_string()
-        truncated_location_string = truncate_string_to_max_tokens(df_string, max_tokens=1700):
+        truncated_location_string = truncate_string_to_max_tokens(df_string, max_tokens=1700)
         gpt_itinerary = generate_gpt_itinerary(truncated_location_string)
         progress_bar.progress(progress_weight["generate_gpt_itinerary"] + progress_weight["starter"])
         
