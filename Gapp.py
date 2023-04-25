@@ -75,15 +75,9 @@ def get_user_preferences():
 
 def generate_gpt_itinerary(tripadvisor_data):
     res_box = st.empty()
-    
-    
-    
-    report = []
-   
+  
             
-            
-            
-    for resp in openai.ChatCompletion.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
                     {
@@ -142,10 +136,15 @@ def generate_gpt_itinerary(tripadvisor_data):
         temperature=0.7,
         stream = True
     ):
-        report.append(resp.choices[0]["message"]["content"])
-        result = "".join(report).strip()
-        result = result.replace("\n", "")        
-        res_box.markdown(f'*{result}*') 
+        for event in response: 
+            # STREAM THE ANSWER
+            print(answer, end='', flush=True) # Print the response    
+            # RETRIEVE THE TEXT FROM THE RESPONSE
+            event_time = time.time() - start_time  # CALCULATE TIME DELAY BY THE EVENT
+            event_text = event['choices'][0]['delta'] # EVENT DELTA RESPONSE
+            answer = event_text.get('content', '') # RETRIEVE CONTENT
+            res_box.markdown(f'*{answer}*') 
+            time.sleep(delay_time)
     
     return response["choices"][0]["message"]["content"].strip()
 
