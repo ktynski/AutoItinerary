@@ -156,7 +156,7 @@ def generate_gpt_itinerary(tripadvisor_data):
     
     
     
-    return response["choices"][0]["message"]["content"].strip()
+    return full_answer
 
 
 
