@@ -304,10 +304,10 @@ def get_place_photo_references(place_id):
         if "photos" in place_details:
             return [photo["photo_reference"] for photo in place_details["photos"]]
 
-    return []
+        return []
 
-df["photo_references"] = df["place_id"].apply(get_place_photo_references)
-return df
+    df["photo_references"] = df["place_id"].apply(get_place_photo_references)
+    return df
 
 
 
